@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# $1 = tag
+# $2 = path
+# TODO: Fail politely for missing args
+
+# --build-arg exposes local env var http_proxy to container OS
+
+docker build -t $1 --build-arg http_proxy=$http_proxy $2
