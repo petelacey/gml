@@ -1,0 +1,7 @@
+GML: Development Instructions
+
+Install Docker: https://docs.docker.com/docker-for-mac/install/ 
+Configure Docker Proxy: Docker / Preferences / Proxies
+
+Build phoenix image: ./scripts/docker_build phoenix:1.3-rc2 docker_files/phoenix/base
+Build phoenix image: ./scripts/docker_build phoenix-dev:1.3-rc2 docker_files/phoenix/dev
