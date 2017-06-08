@@ -6,4 +6,5 @@
 
 # --build-arg exposes local env var http_proxy to container OS
 
-docker build -t $1 --build-arg http_proxy=$http_proxy $2
+# docker build -t $1 --build-arg http_proxy=$http_proxy $2
+docker build -t $1 $2
