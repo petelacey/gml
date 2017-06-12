@@ -1,0 +1,23 @@
+<h2>Show Bond</h2>
+
+<ul>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @bond.amount %>
+  </li>
+
+  <li>
+    <strong>Comments:</strong>
+    <%= @bond.comments %>
+  </li>
+
+  <li>
+    <strong>Account:</strong>
+    <%= @bond.account %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: bond_path(@conn, :edit, @bond) %></span>
+<span><%= link "Back", to: bond_path(@conn, :index) %></span>
