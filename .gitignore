@@ -25,5 +25,8 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 
--# Vim
+# Vim
 .*.sw*
+
+# OS X
+.DS_Store
