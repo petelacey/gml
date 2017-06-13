@@ -3,11 +3,11 @@ defmodule Gml.Repo.Migrations.CreateGml.Bonds.Bond do
 
   def change do
     create table(:bonds) do
-      add :amount, :decimal
+      add :amount, :decimal, null: false
       add :comments, :text
-      add :account, :string
-      add :state_id, references(:states, on_delete: :nothing)
-      add :bond_type_id, references(:bond_types, on_delete: :nothing)
+      add :account, :string, null: false
+      add :state_id, references(:states, on_delete: :nothing), null: false
+      add :bond_type_id, references(:bond_types, on_delete: :nothing), null: false
 
       timestamps()
     end

@@ -3,11 +3,13 @@ defmodule Gml.Repo.Migrations.CreateGml.Bond.State do
 
   def change do
     create table(:states) do
-      add :code, :string
-      add :name, :string
+      add :code, :string, null: false
+      add :name, :string, null: false
 
       timestamps()
     end
-
+  
+    create unique_index(:states, [:code])
+    create unique_index(:states, [:name])
   end
 end
