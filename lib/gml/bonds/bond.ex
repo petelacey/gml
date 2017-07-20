@@ -7,8 +7,8 @@ defmodule Gml.Bonds.Bond do
     field :account, :string
     field :amount, :decimal
     field :comments, :string
-    field :state_id, :id
-    field :bond_type_id, :id
+    belongs_to :state, Gml.Bond.State
+    belongs_to :bond_type, Gml.Bond.BondType
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule Gml.Bonds.Bond do
   @doc false
   def changeset(%Bond{} = bond, attrs) do
     bond
-    |> cast(attrs, [:amount, :comments, :account])
-    |> validate_required([:amount, :comments, :account])
+    |> cast(attrs, [:amount, :comments, :account, :state_id, :bond_type_id])
+    |> validate_required([:amount, :comments, :account, :state_id, :bond_type_id])
   end
 end

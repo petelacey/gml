@@ -1,4 +1,5 @@
 defmodule Gml.Web.BondController do
+  require Logger
   use Gml.Web, :controller
 
   alias Gml.Bonds
@@ -10,7 +11,8 @@ defmodule Gml.Web.BondController do
 
   def new(conn, _params) do
     changeset = Bonds.change_bond(%Gml.Bonds.Bond{})
-    render(conn, "new.html", changeset: changeset)
+    associated_data = Bonds.get_associated_data()
+    render(conn, "new.html", changeset: changeset, associations: associated_data)
   end
 
   def create(conn, %{"bond" => bond_params}) do
@@ -32,7 +34,8 @@ defmodule Gml.Web.BondController do
   def edit(conn, %{"id" => id}) do
     bond = Bonds.get_bond!(id)
     changeset = Bonds.change_bond(bond)
-    render(conn, "edit.html", bond: bond, changeset: changeset)
+    associated_data = Bonds.get_associated_data()
+    render(conn, "edit.html", bond: bond, changeset: changeset, associations: associated_data)
   end
 
   def update(conn, %{"id" => id, "bond" => bond_params}) do

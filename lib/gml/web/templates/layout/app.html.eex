@@ -15,13 +15,16 @@
     <div class="container">
       <header class="header">
         <nav role="navigation">
+          <!--
           <ul class="nav nav-pills pull-right">
             <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
           </ul>
+          -->
         </nav>
-        <span class="logo"></span>
+        <span class='h1'>Give Me Liberty</span><img class='pull-right' height='72px' width='72px' src='http://media1.britannica.com/eb-media/77/159977-004-35F7085A.jpg'/>
       </header>
 
+      <br/>
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 

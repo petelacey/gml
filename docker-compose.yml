@@ -1,8 +1,7 @@
 # TODO: Make compose file work for non-dev environments too
 #
 web:
-  # build: ./phoenix/dev
-  image: phoenix-dev:1.3-rc2
+  build: .
   command: mix phx.server
   ports:
     # On some LM macs nxd (NX daemon) may be running on 4000

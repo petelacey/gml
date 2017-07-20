@@ -35,7 +35,9 @@ defmodule Gml.Bonds do
       ** (Ecto.NoResultsError)
 
   """
-  def get_bond!(id), do: Repo.get!(Bond, id)
+  def get_bond!(id) do
+    Repo.get!(Bond, id) |> Repo.preload([:state, :bond_type])
+  end
 
   @doc """
   Creates a bond.
@@ -100,5 +102,18 @@ defmodule Gml.Bonds do
   """
   def change_bond(%Bond{} = bond) do
     Bond.changeset(bond, %{})
+  end
+
+  @doc """
+  Returns a struct containing all data that can be associated with a bond.
+  That is, a list of states and bond types
+
+  """
+
+  def get_associated_data() do
+    %{
+      states: Repo.all(Gml.Bond.State),
+      types:  Repo.all(Gml.Bond.BondType)
+    }
   end
 end

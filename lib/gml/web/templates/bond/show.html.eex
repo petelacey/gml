@@ -1,23 +1,31 @@
-<h2>Show Bond</h2>
+<% import Number.Currency %>
 
-<ul>
+<h3>Your Quote</h3>
+<hr/>
 
-  <li>
-    <strong>Amount:</strong>
-    <%= @bond.amount %>
-  </li>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span class='h4'><%= @bond.state.name %>: <%= @bond.bond_type.name %></span>
+  </div>
 
-  <li>
-    <strong>Comments:</strong>
-    <%= @bond.comments %>
-  </li>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Amount:</dt>
+      <dd><%= Number.Currency.number_to_currency(@bond.amount) %></dd>
 
-  <li>
-    <strong>Account:</strong>
-    <%= @bond.account %>
-  </li>
+      <dt>Comments:</dt>
+      <dd><%= @bond.comments %></dd>
 
-</ul>
+      <dt>Account:</dt>
+      <dd><%= @bond.account %></dd>
 
-<span><%= link "Edit", to: bond_path(@conn, :edit, @bond) %></span>
+      <div class="text-success">
+        <dt>Annual Fee:</dt>
+        <dd><%= fee(@bond.amount) %></dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<span><%= link "Edit | ", to: bond_path(@conn, :edit, @bond) %></span>
 <span><%= link "Back", to: bond_path(@conn, :index) %></span>

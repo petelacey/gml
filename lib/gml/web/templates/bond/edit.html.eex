@@ -1,6 +1,7 @@
 <h2>Edit Bond</h2>
 
 <%= render "form.html", changeset: @changeset,
+                        associations: @associations,
                         action: bond_path(@conn, :update, @bond) %>
 
 <span><%= link "Back", to: bond_path(@conn, :index) %></span>

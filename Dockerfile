@@ -1,6 +1,15 @@
-FROM phoenix:1.3-rc2
+FROM elixir:latest
 
-RUN mix local.hex --force \
+RUN apt-get update \
+    && apt-get install -y postgresql-client \
+    && apt-get clean
+
+# ENV PHOENIX_VERSION 1.2.1
+
+# install the Phoenix Mix archive
+# 1.3-rc2
+RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez \
+    && mix local.hex --force \
     && mix local.rebar --force
 
 # install Node.js (>= 6.0.0) and NPM in order to satisfy brunch.io dependencies

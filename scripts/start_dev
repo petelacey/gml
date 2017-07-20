@@ -1,0 +1,17 @@
+from_scratch='false'
+
+while getopts 's' flag; do
+  case "${flag}" in
+    s) from_scratch='true' ;;
+    *) error "Unexpected option ${flag}" ;;
+  esac
+done
+
+if [ "$from_scratch" = "true" ]
+then
+  docker-compose run --rm web sh -c "mix ecto.drop"
+  docker-compose run --rm web sh -c "mix ecto.create && mix ecto.migrate"
+  docker-compose run --rm web sh -c "mix run priv/repo/seeds.exs"
+fi
+
+docker-compose up 
