@@ -15,5 +15,5 @@ config :gml, Gml.Repo,
   username: "postgres",
   password: "postgres",
   database: "gml_test",
-  hostname: "localhost",
+  hostname: "postgres",
   pool: Ecto.Adapters.SQL.Sandbox

@@ -8,9 +8,6 @@ web:
     - "5000:5000"
   volumes:
     - .:/app
-  environment:
-    - POSTGRES_USER=gml
-    - POSTGRES_PASSWORD=gml
   links:
     - postgres
 
@@ -19,7 +16,7 @@ postgres:
   ports:
     - "5432"
   environment:
-    - POSTGRES_USER=gml
-    - POSTGRES_PASSWORD=gml
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
   volumes:
-    - postgres-data:/var/lib/postgresql/data
+    - ./postgres-data:/var/lib/postgresql/data

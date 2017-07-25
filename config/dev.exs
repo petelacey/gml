@@ -52,8 +52,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :gml, Gml.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("POSTGRES_USER"), 
-  password: System.get_env("POSTGRES_PASSWORD"),
+  username: "postgres",
+  password: "postgres",
   database: "gml_dev",
   hostname: "postgres",
   pool_size: 10
