@@ -22,7 +22,8 @@ defmodule Gml.Web.BondController do
         |> put_flash(:info, "Bond created successfully.")
         |> redirect(to: bond_path(conn, :show, bond))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        associated_data = Bonds.get_associated_data()
+        render(conn, "new.html", changeset: changeset, associations: associated_data)
     end
   end
 
@@ -47,7 +48,8 @@ defmodule Gml.Web.BondController do
         |> put_flash(:info, "Bond updated successfully.")
         |> redirect(to: bond_path(conn, :show, bond))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", bond: bond, changeset: changeset)
+        associated_data = Bonds.get_associated_data()
+        render(conn, "edit.html", bond: bond, changeset: changeset, associations: associated_data)
     end
   end
 

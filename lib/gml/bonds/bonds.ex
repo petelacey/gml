@@ -36,7 +36,8 @@ defmodule Gml.Bonds do
 
   """
   def get_bond!(id) do
-    Repo.get!(Bond, id) |> Repo.preload([:state, :bond_type])
+    Repo.get!(Bond, id)
+    |> Repo.preload([:state, :bond_type])
   end
 
   @doc """
