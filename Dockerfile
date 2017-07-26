@@ -20,4 +20,16 @@ RUN mix archive.install --force https://github.com/phoenixframework/archives/raw
 # TODO:  We may want to move this outside this image someday
 RUN curl -v -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 
+# create app folder
+COPY . /app  
 WORKDIR /app
+
+# install dependencies
+RUN mix deps.get
+
+# install node dependencies
+# RUN npm install ./assets \
+#     && node ./assets/node_modules/brunch/bin/brunch build \
+
+# run phoenix in *dev* mode on port 4000
+CMD mix phoenix.server  

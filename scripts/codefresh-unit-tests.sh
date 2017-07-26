@@ -11,5 +11,4 @@ wait_for_db() {
 wait_for_db
 
 cd /app
-mix deps.get
 mix test

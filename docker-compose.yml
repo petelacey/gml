@@ -2,7 +2,7 @@
 #
 web:
   build: .
-  command: mix phx.server
+  # command: mix phx.server
   ports:
     # On some LM macs nxd (NX daemon) may be running on 4000
     - "5000:5000"
