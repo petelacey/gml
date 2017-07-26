@@ -1,7 +1,10 @@
 FROM elixir:latest
 
+# netcat and dnsutils are for Codefresh to wait on DB from inside container
 RUN apt-get update \
     && apt-get install -y postgresql-client \
+    && apt-get install -y netcat \
+    && apt-get install -y dnsutils \
     && apt-get clean
 
 # ENV PHOENIX_VERSION 1.2.1
