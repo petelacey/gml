@@ -23,7 +23,7 @@ steps:
 
     composition_candidates:
       test:
-        image: ${{build_step}}
+        image: ${{build_image}}
         links:
           - postgres
         command: bash -c '/app/scripts/codefresh-unit-tests.sh'
