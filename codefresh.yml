@@ -1,0 +1,36 @@
+version: '1.0'
+steps:
+  build_image:
+    title: Building Image
+    type: build
+    description: Building the image...
+    image-name: petelacey/gml
+    tag: ${{CF_BRANCH}}
+
+  run_tests:
+    title: Running Tests
+    type: composition
+    composition:
+      version: '2'
+      services:
+        postgres:
+          image: postgres:9.6
+          ports:
+            - "5432"
+          environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+
+
+  composition_candidates:
+    test:
+      image: ${{build_step}}
+      links:
+        - postgres
+      command: bash -c '/app/scripts/codefresh-unit-tests.sh'
+
+  push_to_registry:
+    title: Pushing to Codefresh Docker Registry
+    type: push
+    candidate: '${{build_image}}'
+    tag: '${{CF_BRANCH}}'
