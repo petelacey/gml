@@ -1,11 +1,12 @@
 version: '1.0'
 steps:
-  build_image:
-    title: Building Image
+  build_test_image:
+    title: Building Test Image
     type: build
-    description: Building the image...
-    image-name: petelacey/gml
-    tag: ${{CF_BRANCH}}
+    description: Building an image to run tests
+    dockerfile: Dockerfile.test
+    image-name: petelacey/gml_test
+    tag: latest
 
   run_tests:
     title: Running Tests
@@ -23,13 +24,15 @@ steps:
 
     composition_candidates:
       test:
-        image: ${{build_image}}
+        image: petelacey/gml_test:latest
         links:
           - postgres
         command: bash -c '/app/scripts/codefresh-unit-tests.sh'
 
-  push_to_registry:
-    title: Pushing to Codefresh Docker Registry
-    type: push
-    candidate: '${{build_image}}'
-    tag: '${{CF_BRANCH}}'
+  build_production_image:
+    title: Building Production Image
+    type: build
+    description: Building an image to deploy to prod
+    dockerfile: Dockerfile
+    image-name: petelacey/gml
+    tag: latest
