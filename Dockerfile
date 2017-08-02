@@ -6,10 +6,12 @@
 # Debian Jessie (not slim) and drags in a lot of build tools.
 #
 
-FROM elixir:latest
+FROM elixir:1.4
 
 RUN apt-get update \
     && apt-get install -y postgresql-client \
+    && apt-get install -y netcat \
+    && apt-get install -y dnsutils \
     && apt-get clean
 
 # 1.3-rc2

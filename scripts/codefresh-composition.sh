@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 wait_for_db() {
   nslookup postgres
   if ! nc -z postgres 5432; then
