@@ -39,7 +39,7 @@ steps:
 
   deploy-elastic-beanstalk:
     fail-fast: false
-    image: petelacey/gml:latest
+    image: garland/aws-cli-docker:latest
     commands:
      - sh -c  "aws configure set region '${{AWS_REGION}}' && aws elasticbeanstalk update-environment --environment-name '${{AWS_ENV_NAME}}' --version-label '${{AWS_VERSION}}' "
     when:
