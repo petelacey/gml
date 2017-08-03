@@ -35,6 +35,7 @@ WORKDIR /app
 RUN MIX_ENV=prod mix phx.digest \
     && mix compile
 
+ENV PORT 5000
 EXPOSE 5000
 
 CMD MIX_ENV=prod mix phx.server  

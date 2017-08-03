@@ -14,7 +14,8 @@ config :gml, Gml.Web.Endpoint,
 # Configure your database
 config :gml, Gml.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DB_USERNAME"),
-  password: System.get_env("DB_PASSWORD"),
-  database: "gml_prod",
+  username: System.get_env("RDS_USERNAME"),
+  password: System.get_env("RDS_PASSWORD"),
+  database: System.get_env("RDS_DB_NAME"),
+  hostname: System.get_env("RDS_HOSTNAME"),
   pool_size: 15
