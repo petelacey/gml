@@ -37,6 +37,13 @@ steps:
     image-name: petelacey/gml
     tag: latest
 
+  push_production_image_to_ecr:
+    title: Pushing final image to ECR
+    type: push
+    candidate: '${{build_production_image}}'
+    tag: latest
+    registry: ecr
+
   deploy-elastic-beanstalk:
     fail-fast: false
     image: garland/aws-cli-docker:latest
