@@ -48,7 +48,7 @@ defmodule Gml.Web.Endpoint do
   and must return the updated configuration.
   """
   def load_from_system_env(config) do
-    port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
+    port = 5000 # System.get_env("PORT") || raise "expected the PORT environment variable to be set"
     {:ok, Keyword.put(config, :http, [:inet6, port: port])}
   end
 end
