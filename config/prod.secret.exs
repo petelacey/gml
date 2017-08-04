@@ -18,4 +18,5 @@ config :gml, Gml.Repo,
   password: System.get_env("RDS_PASSWORD"),
   database: System.get_env("RDS_DB_NAME"),
   hostname: System.get_env("RDS_HOSTNAME"),
+  port: System.get_env("RDS_PORT") || 5432,
   pool_size: 15
