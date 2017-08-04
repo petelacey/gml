@@ -1,0 +1,19 @@
+.git
+.DS_Store
+*.swp
+
+.log
+tmp
+
+# Mix artifacts
+_build
+deps
+*.ez
+
+# Generate on crash by the VM
+erl_crash.dump
+npm-debug.log
+
+# Static artifacts
+node_modules
+priv
