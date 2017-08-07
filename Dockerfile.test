@@ -6,9 +6,8 @@
 # Debian Jessie (not slim) and drags in a lot of build tools.
 #
 
-FROM elixir:latest
+FROM elixir:1.4
 
-# netcat and dnsutils are for Codefresh to wait on DB from inside container
 RUN apt-get update \
     && apt-get install -y postgresql-client \
     && apt-get install -y netcat \
@@ -26,7 +25,6 @@ RUN mkdir /app
 WORKDIR /app
 ADD . .
 
-# Install app dependencies
 RUN mix local.hex --force \
     && mix local.rebar --force \
     && mix deps.get
@@ -35,7 +33,8 @@ RUN mix local.hex --force \
 WORKDIR /app/assets
 RUN npm install --prefix /app/assets
 
+WORKDIR /app
+
 EXPOSE 5000
 
-WORKDIR /app
 CMD mix phx.server

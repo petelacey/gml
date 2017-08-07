@@ -5,7 +5,7 @@ steps:
     type: build
     description: Building an image to run tests
     dockerfile: Dockerfile.test
-    image-name: petelacey/gml_test
+    image_name: petelacey/gml_test
     tag: latest
 
   run_tests:
@@ -34,7 +34,7 @@ steps:
     type: build
     description: Building an image to deploy to prod
     dockerfile: Dockerfile
-    image-name: petelacey/gml
+    image_name: petelacey/gml
     tag: latest
 
   push_production_image_to_ecr:
@@ -44,8 +44,8 @@ steps:
     tag: latest
     registry: ecr
 
-  deploy-elastic-beanstalk:
-    fail-fast: false
+  deploy_elastic_beanstalk:
+    fail_fast: false
     image: garland/aws-cli-docker:latest
     commands:
      - sh -c  "aws configure set region '${{AWS_REGION}}' && aws elasticbeanstalk update-environment --environment-name '${{AWS_ENV_NAME}}' --version-label '${{AWS_VERSION}}' "
