@@ -14,8 +14,11 @@ RUN apt-get update \
     && apt-get install -y dnsutils \
     && apt-get clean
 
+
+# Install Phoenix 1.3
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez
 
+# Install NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 
 RUN mkdir /app
@@ -26,6 +29,7 @@ RUN MIX_ENV=prod mix local.hex --force \
     && mix local.rebar --force \
     && mix deps.get
 
+# Install JS dependencies
 WORKDIR /app/assets
 RUN NODE_ENV=production npm install --prefix /app/assets \
     && node_modules/brunch/bin/brunch build --production
