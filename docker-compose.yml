@@ -5,7 +5,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile.dev
     ports:
       # On some LM macs nxd (NX daemon) may be running on 4000
       - "5000:5000"
