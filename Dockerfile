@@ -34,6 +34,8 @@ ENV MIX_ENV=prod
 ARG ERLANG_COOKIE
 ENV ERLANG_COOKIE $ERLANG_COOKIE
 
+RUN apk add --no-cache ncurses-libs openssl bash
+
 # Install Hex + Rebar
 RUN mix do local.hex --force, local.rebar --force
 
