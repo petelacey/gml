@@ -2,10 +2,10 @@ FROM elixir:1.4
 
 RUN apt-get update \
     && apt-get install -y postgresql-client \
-    && apt-get install -y netcat \
-    && apt-get install -y dnsutils \
     && apt-get install -y inotify-tools \
     && apt-get clean
+
+
 
 ENV MIX_ENV=dev
 
@@ -17,18 +17,20 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y
 
 RUN mkdir /app
 WORKDIR /app
-ADD . .
 
-RUN mix local.hex --force \
-    && mix local.rebar --force \
-    && mix deps.get
+RUN mix do local.hex --force, local.rebar --force
+
+# Cache elixir deps
+COPY config/ /app/config/
+COPY mix.exs mix.lock /app/
+RUN  mix deps.get
 
 # Install JS dependencies
 WORKDIR /app/assets
-RUN npm install --prefix /app/assets
+COPY assets/ ./
+RUN npm install
 
 WORKDIR /app
-
+ADD . .
 EXPOSE 5000
-
 CMD mix phx.server

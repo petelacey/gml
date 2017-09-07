@@ -1,40 +1,39 @@
-#
-# This is a _good enough_ Dockerfile
-#
-# What we want ultimately is to use Distillery and make the final image as small as possible.
-# This one leaves behind the source and node.  Also, it builds from exlixir:latest which uses
-# Debian Jessie (not slim) and drags in a lot of build tools.
-#
-
 FROM elixir:1.4
+
+# netcat and dnsutils are used to probe postgres and delay starting the web app until
+# postgres is responsive.  See e.g. scripts/unit-tests.sh
 
 RUN apt-get update \
     && apt-get install -y postgresql-client \
     && apt-get install -y netcat \
     && apt-get install -y dnsutils \
-    && apt-get install -y inotify-tools \
     && apt-get clean
 
-# Install Phoenix 1.3
-RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+
+ENV MIX_ENV=test
+
+# We do not need to "install" Phoenix, since that just adds the ability to run
+# mix phx.new, which is not needed in test
 
 # Install NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 
 RUN mkdir /app
 WORKDIR /app
-ADD . .
 
-RUN mix local.hex --force \
-    && mix local.rebar --force \
-    && mix deps.get
+RUN mix do local.hex --force, local.rebar --force
+
+# Cache elixir deps
+COPY config/ /app/config/
+COPY mix.exs mix.lock /app/
+RUN  mix deps.get
 
 # Install JS dependencies
 WORKDIR /app/assets
-RUN npm install --prefix /app/assets
+COPY assets/ ./
+RUN npm install
 
 WORKDIR /app
-
+ADD . .
 EXPOSE 5000
-
 CMD mix phx.server

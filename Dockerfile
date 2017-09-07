@@ -1,44 +1,82 @@
-#
-# This is a _good enough_ Dockerfile
-#
-# What we want ultimately is to use Distillery and make the final image as small as possible.
-# This one leaves behind the source and node.  Also, it builds from exlixir:latest which uses
-# Debian Jessie (not slim) and drags in a lot of build tools.
-#
+FROM elixir:1.4.5 as mix-getter
 
-FROM elixir:1.4
+ENV HOME=/app
+ENV MIX_ENV=prod
 
-RUN apt-get update \
-    && apt-get install -y postgresql-client \
-    && apt-get install -y netcat \
-    && apt-get install -y dnsutils \
-    && apt-get clean
+RUN mix do local.hex --force, local.rebar --force
 
+# Cache elixir deps
+COPY config/ $HOME/config/
+COPY mix.exs mix.lock $HOME/
 
-# Install Phoenix 1.3
-RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+WORKDIR $HOME
+RUN mix deps.get
 
-# Install NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
+########################################################################
+FROM node:6 as asset-builder
 
-RUN mkdir /app
-WORKDIR /app
-ADD . .
+ENV HOME=/app
+WORKDIR $HOME
 
-RUN MIX_ENV=prod mix local.hex --force \
-    && mix local.rebar --force \
-    && mix deps.get
+COPY --from=mix-getter $HOME/deps $HOME/deps
 
-# Install JS dependencies
-WORKDIR /app/assets
-RUN NODE_ENV=production npm install --prefix /app/assets \
-    && node_modules/brunch/bin/brunch build --production
+WORKDIR $HOME/assets
+COPY assets/ ./
+RUN yarn install
+RUN ./node_modules/brunch/bin/brunch build --production
 
-WORKDIR /app
-RUN MIX_ENV=prod mix phx.digest \
-    && mix compile
+########################################################################
+FROM bitwalker/alpine-elixir:1.4.5 as releaser
 
-ENV PORT 5000
+ENV HOME=/app
+ENV MIX_ENV=prod
+
+ARG ERLANG_COOKIE
+ENV ERLANG_COOKIE $ERLANG_COOKIE
+
+# dependencies for comeonin
+RUN apk add --no-cache build-base cmake
+
+# Install Hex + Rebar
+RUN mix do local.hex --force, local.rebar --force
+
+# Cache elixir deps
+COPY config/ $HOME/config/
+COPY mix.exs mix.lock $HOME/
+RUN mix do deps.get --only $MIX_ENV, deps.compile
+
+COPY . $HOME/
+
+# Digest precompiled assets
+COPY --from=asset-builder $HOME/apps/myproject_web/priv/static/ $HOME/apps/myproject_web/priv/static/
+
+WORKDIR $HOME/apps/myproject_web
+RUN mix phx.digest
+
+# Uses Distillery to generate an object binary (in a tar.gz) containing erlang and our elixir app
+WORKDIR $HOME
+RUN mix release --env=$MIX_ENV --verbose
+
+########################################################################
+FROM alpine:3.6
+
+ENV LANG=en_US.UTF-8 \
+    HOME=/app/ \
+    TERM=xterm
+
+ENV GML_VERSION=0.1.0
+
+RUN apk add --no-cache ncurses-libs openssl
+
 EXPOSE 5000
+ENV PORT=5000 \
+    MIX_ENV=prod \
+    REPLACE_OS_VARS=true \
+    SHELL=/bin/sh
 
-CMD MIX_ENV=prod mix phx.server  
+COPY --from=releaser $HOME/_build/prod/rel/gml/releases/$GML_VERSION/gml.tar.gz $HOME
+WORKDIR $HOME
+RUN tar -xzf gml.tar.gz
+
+ENTRYPOINT ["/app/bin/gml"]
+CMD ["foreground"]
