@@ -36,6 +36,7 @@ defmodule Gml.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:number, "~> 0.5.1"},
+     {:distillery, "~> 1.4", runtime: false},
      {:cowboy, "~> 1.0"}]
   end
 
