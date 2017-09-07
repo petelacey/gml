@@ -54,29 +54,32 @@ COPY --from=asset-builder $HOME/priv/static/ $HOME/priv/static/
 WORKDIR $HOME
 RUN mix phx.digest
 
-# Uses Distillery to generate an object binary (in a tar.gz) containing erlang and our elixir app
-RUN mix release --env=$MIX_ENV --verbose
-
-########################################################################
-FROM alpine:3.6
-
-ENV LANG=en_US.UTF-8 \
-    HOME=/app/ \
-    TERM=xterm
-
-ENV GML_VERSION=0.0.1
-
-RUN apk add --no-cache ncurses-libs openssl bash
-
 EXPOSE 5000
-ENV PORT=5000 \
-    MIX_ENV=prod \
-    REPLACE_OS_VARS=true \
-    SHELL=/bin/sh
+CMD mix phx.server
 
-COPY --from=releaser $HOME/_build/prod/rel/gml/releases/$GML_VERSION/gml.tar.gz $HOME
-WORKDIR $HOME
-RUN tar -xzf gml.tar.gz
-
-ENTRYPOINT ["/app/bin/gml"]
-CMD ["foreground"]
+# Uses Distillery to generate an object binary (in a tar.gz) containing erlang and our elixir app
+# RUN mix release --env=$MIX_ENV --verbose
+#
+########################################################################
+# FROM alpine:3.6
+# 
+# ENV LANG=en_US.UTF-8 \
+#     HOME=/app/ \
+#     TERM=xterm
+# 
+# ENV GML_VERSION=0.0.1
+# 
+# RUN apk add --no-cache ncurses-libs openssl bash
+# 
+# EXPOSE 5000
+# ENV PORT=5000 \
+#     MIX_ENV=prod \
+#     REPLACE_OS_VARS=true \
+#     SHELL=/bin/sh
+# 
+# COPY --from=releaser $HOME/_build/prod/rel/gml/releases/$GML_VERSION/gml.tar.gz $HOME
+# WORKDIR $HOME
+# RUN tar -xzf gml.tar.gz
+# 
+# ENTRYPOINT ["/app/bin/gml"]
+# CMD ["foreground"]
