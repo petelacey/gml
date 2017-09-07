@@ -41,6 +41,7 @@ RUN apk add --no-cache build-base cmake
 RUN mix do local.hex --force, local.rebar --force
 
 # Cache elixir deps
+WORKDIR $HOME
 COPY config/ $HOME/config/
 COPY mix.exs mix.lock $HOME/
 RUN mix do deps.get --only $MIX_ENV, deps.compile
