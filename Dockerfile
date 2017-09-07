@@ -49,9 +49,9 @@ RUN mix do deps.get --only $MIX_ENV, deps.compile
 COPY . $HOME/
 
 # Digest precompiled assets
-COPY --from=asset-builder $HOME/gml/priv/static/ $HOME/gml/priv/static/
+COPY --from=asset-builder $HOME/priv/static/ $HOME/priv/static/
 
-WORKDIR $HOME/gml
+WORKDIR $HOME
 RUN mix phx.digest
 
 # Uses Distillery to generate an object binary (in a tar.gz) containing erlang and our elixir app
