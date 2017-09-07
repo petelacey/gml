@@ -66,7 +66,7 @@ ENV LANG=en_US.UTF-8 \
 
 ENV GML_VERSION=0.0.1
 
-RUN apk add --no-cache ncurses-libs openssl
+RUN apk add --no-cache ncurses-libs openssl bash
 
 EXPOSE 5000
 ENV PORT=5000 \
