@@ -64,7 +64,7 @@ ENV LANG=en_US.UTF-8 \
     HOME=/app/ \
     TERM=xterm
 
-ENV GML_VERSION=0.1.0
+ENV GML_VERSION=0.0.1
 
 RUN apk add --no-cache ncurses-libs openssl
 
