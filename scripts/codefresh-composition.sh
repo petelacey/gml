@@ -12,5 +12,5 @@ wait_for_db() {
 wait_for_db
 
 cd /app
-mix ecto.reset
-mix phx.server
+MIX_ENV=test mix ecto.reset
+MIX_ENV=test mix phx.server
