@@ -36,7 +36,5 @@ RUN npm install
 WORKDIR /app
 ADD . .
 
-RUN mix phx.compile
-
 EXPOSE 5000
 CMD mix phx.server --no-compile
