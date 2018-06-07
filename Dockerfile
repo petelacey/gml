@@ -1,84 +1,19 @@
-FROM elixir:1.4.5 as mix-getter
+FROM ruby:latest
 
-ENV HOME=/app
-ENV MIX_ENV=prod
+RUN apt-get update && \
+    apt-get install --yes build-essential inotify-tools postgresql-client && \
+    apt-get clean
 
-RUN mix do local.hex --force, local.rebar --force
+# Install node
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 
-# Cache elixir deps
-COPY config/ $HOME/config/
-COPY mix.exs mix.lock $HOME/
+RUN mkdir /app
+WORKDIR /app
 
-WORKDIR $HOME
-RUN mix deps.get
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
+RUN bundle install
 
-########################################################################
-FROM node:6 as asset-builder
-
-ENV HOME=/app
-WORKDIR $HOME
-
-COPY --from=mix-getter $HOME/deps $HOME/deps
-
-WORKDIR $HOME/assets
-COPY assets/ ./
-RUN yarn install
-RUN ./node_modules/brunch/bin/brunch build --production
-
-########################################################################
-FROM bitwalker/alpine-elixir:1.4.5 as releaser
-
-ENV HOME=/app
-ENV MIX_ENV=prod
-
-ARG ERLANG_COOKIE
-ENV ERLANG_COOKIE $ERLANG_COOKIE
-
-RUN apk add --no-cache ncurses-libs openssl bash
-
-# Install Hex + Rebar
-RUN mix do local.hex --force, local.rebar --force
-
-# Cache elixir deps
-WORKDIR $HOME
-COPY config/ $HOME/config/
-COPY mix.exs mix.lock $HOME/
-RUN mix do deps.get --only $MIX_ENV, deps.compile
-
-COPY . $HOME/
-
-# Digest precompiled assets
-COPY --from=asset-builder $HOME/priv/static/ $HOME/priv/static/
-
-WORKDIR $HOME
-RUN mix phx.digest
-
-EXPOSE 5000
-CMD mix phx.server
-
-# Uses Distillery to generate an object binary (in a tar.gz) containing erlang and our elixir app
-# RUN mix release --env=$MIX_ENV --verbose
-#
-########################################################################
-# FROM alpine:3.6
-# 
-# ENV LANG=en_US.UTF-8 \
-#     HOME=/app/ \
-#     TERM=xterm
-# 
-# ENV GML_VERSION=0.0.1
-# 
-# RUN apk add --no-cache ncurses-libs openssl bash
-# 
-# EXPOSE 5000
-# ENV PORT=5000 \
-#     MIX_ENV=prod \
-#     REPLACE_OS_VARS=true \
-#     SHELL=/bin/sh
-# 
-# COPY --from=releaser $HOME/_build/prod/rel/gml/releases/$GML_VERSION/gml.tar.gz $HOME
-# WORKDIR $HOME
-# RUN tar -xzf gml.tar.gz
-# 
-# ENTRYPOINT ["/app/bin/gml"]
-# CMD ["foreground"]
+COPY . /app
+EXPOSE 3000
+CMD ["/app/entrypoint.sh"]

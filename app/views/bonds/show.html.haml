@@ -1,0 +1,15 @@
+.card
+  .card-content
+    %span.card-title
+      = "Bond: #{@bond.id}"
+    %br
+    .row
+      .col.s6
+        = @bond.account
+      .col.s6
+        = @bond.amount
+    .row
+      .col.s6
+        = @bond.bond_state.name
+      .col.s6
+        = @bond.bond_type.name

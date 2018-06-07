@@ -1,0 +1,40 @@
+.card
+  .card-content
+    %span.card-title
+      New Bond
+    %br
+    = form_for @bond do |bond_form|
+      .row
+        .input-field.col.s6
+          = bond_form.text_field :account,
+            placeholder: 'Company/Individual Name',
+            autofocus:   true
+          = bond_form.label :account, class: [:active]
+
+        .input-field.col.s6
+          = bond_form.number_field :amount,
+            placeholder: '0.00',
+            autofocus:   true
+          = bond_form.label :amount, class: [:active]
+
+      .row
+        .input-field.col.s6
+          = bond_form.collection_select :bond_state_id, @bond_states.all, :id, :name
+          = bond_form.label :bond_state, class: [:active]
+
+        .input-field.col.s6
+          = bond_form.collection_select :bond_type_id, @bond_types.all, :id, :name
+          = bond_form.label :bond_type, class: [:active]
+
+        .row
+          .col.s10
+          .col.s2
+            %button.btn.waves-effect.waves-light.-align{type: :submit, name: :action}
+              Submit
+              %i.material-icons.right
+                cloud
+
+:javascript
+  $(document).ready(function() {
+    $('select').material_select();
+  });

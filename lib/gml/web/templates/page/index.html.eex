@@ -1,9 +1,0 @@
-<div class="jumbotron">
-  <h2>Surety Bonds</h2>
-  <h2>From A Name You Can Trust. Pete Lacey</h2>
-  <h3 class="text-danger">Instant Quotes</h3>
-  <p>Construction &bullet; Commercial &bullet; Court Bonds.</p>
-</div>
-
-<span><%= link "New Bond", to: bond_path(@conn, :new) %></span>
-<!-- <div class="text-center"><%= link "New Bond", to: bond_path(@conn, :new), class: "btn btn-primary btn-lg" %></div> -->
