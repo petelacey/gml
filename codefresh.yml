@@ -27,7 +27,7 @@ steps:
         image: petelacey/gml_test:latest
         links:
           - db
-        command: rails test
+        command: bash -c '/app/scripts/test.sh'
 
   build_production_image:
     title: Building Production Image

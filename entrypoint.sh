@@ -15,6 +15,7 @@ if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
   bin/rails db:create
   bin/rails db:migrate
   bin/rails db:seed
+
   echo "Database $PGDATABASE created."
 fi
 
