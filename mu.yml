@@ -9,3 +9,10 @@ service:
     source:
       provider: GitHub
       repo: petelacey/gml
+  environment:
+    APP_DATABASE_PASSWORD: ${DatabaseMasterPassword}
+  database:
+    name: gml_production
+    engine: postgresql
+    masterUsername: gml
+    allocatedStorage: 1
