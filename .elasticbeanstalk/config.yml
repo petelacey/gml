@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: GML-Production
+    environment: GMLProduction
 environment-defaults:
   GML-Production:
     branch: null
