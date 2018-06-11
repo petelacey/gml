@@ -13,3 +13,8 @@
         = @bond.bond_state.name
       .col.s6
         = @bond.bond_type.name
+
+= link_to "Edit Quote",  edit_bond_path(@bond)
+%br
+= link_to "List Quotes", bonds_path
+

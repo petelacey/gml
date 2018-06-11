@@ -1,0 +1,25 @@
+%table
+  %tr
+    %th
+      Account
+    %th
+      Amount
+    %th
+      Type
+    %th
+      State
+  - @bonds.each do |bond|
+    %tr
+      %td
+        = bond.account
+      %td
+        = bond.amount
+      %td
+        = bond.bond_type.name
+      %td
+        = bond.bond_state.name
+      %td
+        = link_to('edit', edit_bond_path(bond))
+
+= link_to "Get Quote", new_bond_path
+

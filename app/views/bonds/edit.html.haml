@@ -1,7 +1,7 @@
 .card
   .card-content
     %span.card-title
-      New Bond
+      Edit Bond
     %br
     = form_for @bond do |bond_form|
       .row
@@ -34,9 +34,8 @@
               %i.material-icons.right
                 cloud
 
-= link_to "List Quotes", bonds_path
-
 :javascript
   $(document).ready(function() {
     $('select').material_select();
   });
+
